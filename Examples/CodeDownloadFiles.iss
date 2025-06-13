@@ -7,10 +7,10 @@
 ; -For innosetup-latest.exe and MyProg-ExtraReadmes.7z: using Inno Setup
 ;  Signature Tool, the [ISSigKeys] section, and the AddWithISSigVerify support
 ;  function
-; -For iscrypt.dll: using a simple SHA256 check
+; -For iscrypt.dll: using a simple SHA-256 hash check
 ; Using the Inno Setup Signature Tool has the benefit that the script does not
 ; need to be changed when the downloaded file changes, so any installers built
-; will also keep working
+; will also keep working (they are "evergreen")
 
 [Setup]
 AppName=My Program
@@ -25,7 +25,7 @@ OutputDir=userdocs:Inno Setup Examples Output
 ArchiveExtraction=enhanced/nopassword
 
 [ISSigKeys]
-Name: "mykey"; RuntimeID: "def02"; \
+Name: mykey; RuntimeID: def02; \
   KeyID:   "def020edee3c4835fd54d85eff8b66d4d899b22a777353ca4a114b652e5e7a28"; \
   PublicX: "515dc7d6c16d4a46272ceb3d158c5630a96466ab4d948e72c2029d737c823097"; \
   PublicY: "f3c21f6b5156c52a35f6f28016ee3e31a3ded60c325b81fb7b1f88c221081a61"
@@ -38,10 +38,12 @@ Source: "Readme.txt"; DestDir: "{app}"; Flags: isreadme
 ; These files will be downloaded using [Files] only
 Source: "https://jrsoftware.org/download.php/is.exe?dontcount=1"; DestName: "innosetup-latest.exe"; DestDir: "{app}"; \
   ExternalSize: 7_000_000; Flags: external download ignoreversion issigverify
+Source: "https://jrsoftware.org/download.php/iscrypt.dll?dontcount=1"; DestName: "ISCrypt.dll"; DestDir: "{app}"; \
+  Hash: "2f6294f9aa09f59a574b5dcd33be54e16b39377984f3d5658cda44950fa0f8fc"; \
+  ExternalSize: 2560; Flags: external download ignoreversion
 ; These files will be downloaded by [Code]. If you include flag issigverify here the file will be verified
 ; a second time while copying. Verification while copying is efficient, except for archives.
 Source: "{tmp}\MyProg-ExtraReadmes.7z"; DestDir: "{app}"; Flags: external extractarchive recursesubdirs ignoreversion
-Source: "{tmp}\ISCrypt.dll"; DestDir: "{app}"; Flags: external ignoreversion
 
 [Icons]
 Name: "{group}\My Program"; Filename: "{app}\MyProg.exe"
@@ -75,9 +77,6 @@ begin
     DownloadPage.AddWithISSigVerify(
       'https://jrsoftware.org/download.php/myprog-extrareadmes.7z', '',
       'MyProg-ExtraReadmes.7z', AllowedKeysRuntimeIDs);
-    DownloadPage.Add(
-      'https://jrsoftware.org/download.php/iscrypt.dll?dontcount=1',
-      'ISCrypt.dll', '2f6294f9aa09f59a574b5dcd33be54e16b39377984f3d5658cda44950fa0f8fc');
     DownloadPage.Show;
     try
       try
