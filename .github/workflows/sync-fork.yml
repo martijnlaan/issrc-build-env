@@ -17,8 +17,8 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           BRANCH_NAME: ${{ github.ref_name }}
       - run: |
-          if gh pr view "$PR_REF" --json number --repo "$REPOSITORY" >/dev/null 2>&1; then
-            PR_NUMBER=$(gh pr view "$PR_REF" --json number --jq '.number' --repo "$REPOSITORY")
+          PR_NUMBER=$(gh pr list --repo "$REPOSITORY" --state open --base "$PR_BASE" --head "$REPOSITORY_OWNER:$BRANCH_NAME" --json number --jq '.[0].number' || true)
+          if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
             gh api \
               repos/$REPOSITORY/pulls/$PR_NUMBER/requested_reviewers \
               --method POST \
@@ -28,5 +28,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ISSRC_BUILD_ENV_SYNC_TOKEN }}
           GH_TOKEN: ${{ secrets.ISSRC_BUILD_ENV_SYNC_TOKEN }}
           REPOSITORY: ${{ github.repository }}
-          PR_REF: copilot-review
+          REPOSITORY_OWNER: ${{ github.repository_owner }}
+          BRANCH_NAME: ${{ github.ref_name }}
+          PR_BASE: copilot-review
           COPILOT_LOGIN: github-copilot
