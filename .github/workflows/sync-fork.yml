@@ -20,9 +20,8 @@ jobs:
           PR_NUMBER=$(gh pr list --repo "$REPOSITORY" --state open --base "$PR_BASE" --json number,headRefName,headRepositoryOwner --jq ".[] | select(.headRefName == \"$BRANCH_NAME\") | .number" | head -n 1)
           echo "PR_NUMBER=$PR_NUMBER"
           if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
-            # see https://github.com/cli/cli/issues/10598#issuecomment-2893526162
-            gh alias set save-me-copilot 'api --method POST /repos/$1/pulls/$2/requested_reviewers -f "reviewers[]=$COPILOT_LOGIN"'
-            gh save-me-copilot "$REPOSITORY" "$PR_NUMBER"
+            gh alias set save-me-copilot 'api --method POST /repos/$1/pulls/$2/requested_reviewers -f "reviewers[]=copilot-pull-request-reviewer[bot]"'
+            gh save-me-copilot martijnlaan/issrc-build-env 3
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.ISSRC_BUILD_ENV_SYNC_TOKEN }}
