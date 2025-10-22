@@ -16,3 +16,17 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ISSRC_BUILD_ENV_SYNC_TOKEN }}
           REPOSITORY: ${{ github.repository }}
           BRANCH_NAME: ${{ github.ref_name }}
+      - run: |
+          if gh pr view "$PR_REF" --json number --repo "$REPOSITORY" >/dev/null 2>&1; then
+            PR_NUMBER=$(gh pr view "$PR_REF" --json number --jq '.number' --repo "$REPOSITORY")
+            gh api \
+              repos/$REPOSITORY/pulls/$PR_NUMBER/requested_reviewers \
+              --method POST \
+              -f reviewers[]="$COPILOT_LOGIN"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.ISSRC_BUILD_ENV_SYNC_TOKEN }}
+          GH_TOKEN: ${{ secrets.ISSRC_BUILD_ENV_SYNC_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          PR_REF: copilot-review
+          COPILOT_LOGIN: github-copilot
