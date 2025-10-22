@@ -20,11 +20,13 @@ jobs:
           PR_NUMBER=$(gh pr list --repo "$REPOSITORY" --state open --base "$PR_BASE" --json number,headRefName,headRepositoryOwner --jq ".[] | select(.headRefName == \"$BRANCH_NAME\") | .number" | head -n 1)
           echo "PR_NUMBER=$PR_NUMBER"
           if [ -n "$PR_NUMBER" ] && [ "$PR_NUMBER" != "null" ]; then
-            gh pr edit "$PR_NUMBER" --repo "$REPOSITORY" --add-reviewer "$COPILOT_LOGIN"
+            # see https://github.com/cli/cli/issues/10598#issuecomment-2893526162
+            gh alias set save-me-copilot 'api --method POST /repos/$1/pulls/$2/requested_reviewers -f "reviewers[]=$COPILOT_LOGIN"'
+            gh save-me-copilot "$REPOSITORY" "$PR_NUMBER"
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.ISSRC_BUILD_ENV_SYNC_TOKEN }}
           REPOSITORY: ${{ github.repository }}
           BRANCH_NAME: ${{ github.ref_name }}
           PR_BASE: copilot-review
-          COPILOT_LOGIN: copilot-pull-request-reviewer
+          COPILOT_LOGIN: copilot-pull-request-reviewer[bot]
