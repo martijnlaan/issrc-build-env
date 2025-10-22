@@ -27,4 +27,4 @@ jobs:
           REPOSITORY: ${{ github.repository }}
           BRANCH_NAME: ${{ github.ref_name }}
           PR_BASE: copilot-review
-          COPILOT_LOGIN: github-copilot
+          COPILOT_LOGIN: copilot-pull-request-reviewer
