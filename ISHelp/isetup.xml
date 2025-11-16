@@ -126,7 +126,7 @@
 
 <li>Supports creation of a single EXE to install your program for easy online distribution. <link topic="setup_diskspanning">Disk spanning</link> is also supported.</li>
 
-<li>Resizable standard Windows wizard interface, with support for dark mode and custom styles.</li>
+<li>Resizable standard Windows wizard interface, with support for <link topic="setup_wizardstyle">dark mode and custom styles</link>.</li>
 
 <li>Customizable setup <link topic="typessection">types</link>, e.g. Full, Minimal, Custom.</li>
 
@@ -2223,6 +2223,7 @@ MessagesFile: "compiler:Default.isl,compiler:MyMessages.isl"
 <param name="LicenseFile">
 <p>Specifies the name of an optional license agreement file, in .txt or .rtf (rich text) format, which is displayed before the user selects the destination directory for the program. This file must be located in your installation's <link topic="sourcedirectorynotes">source directory</link> when running the compiler, unless a fully qualified pathname is specified or the pathname is prefixed by "compiler:", in which case it looks for the file in the compiler directory.</p>
 <p>If an Unicode .txt file is used, it must be UTF-8 (with or without a BOM) or UTF-16LE encoded.</p>
+<p>If a .rtf file is used and Setup runs with a <link topic="setup_wizardstyle">dark style</link>, any foreground colors are dropped to ensure readability.</p>
 <example>
 <pre>LicenseFile: "license-Dutch.txt"</pre>
 </example>
@@ -2231,6 +2232,7 @@ MessagesFile: "compiler:Default.isl,compiler:MyMessages.isl"
 <param name="InfoBeforeFile">
 <p>Specifies the name of an optional "readme" file, in .txt or .rtf (rich text) format, which is displayed before the user selects the destination directory for the program. This file must be located in your installation's <link topic="sourcedirectorynotes">source directory</link> when running the compiler, unless a fully qualified pathname is specified or the pathname is prefixed by "compiler:", in which case it looks for the file in the compiler directory.</p>
 <p>If an Unicode .txt file is used, it must be UTF-8 (with or without a BOM) or UTF-16LE encoded.</p>
+<p>If a .rtf file is used and Setup runs with a <link topic="setup_wizardstyle">dark style</link>, any foreground colors are dropped to ensure readability.</p>
 <example>
 <pre>InfoBeforeFile: "infobefore-Dutch.txt"</pre>
 </example>
@@ -2240,6 +2242,7 @@ MessagesFile: "compiler:Default.isl,compiler:MyMessages.isl"
 <p>Specifies the name of an optional "readme" file, in .txt or .rtf (rich text) format, which is displayed after a successful install. This file must be located in your installation's <link topic="sourcedirectorynotes">source directory</link> when running the compiler, unless a fully qualified pathname is specified or the pathname is prefixed by "compiler:", in which case it looks for the file in the compiler directory.</p>
 <p>This differs from <tt>isreadme</tt> files in that this text is displayed as a page of the wizard, instead of in a separate Notepad window.</p>
 <p>If an Unicode .txt file is used, it must be UTF-8 (with or without a BOM) or UTF-16LE encoded.</p>
+<p>If a .rtf file is used and Setup runs with a <link topic="setup_wizardstyle">dark style</link>, any foreground colors are dropped to ensure readability.</p>
 <example>
 <pre>InfoAfterFile: "infoafter-Dutch.txt"</pre>
 </example>
@@ -5540,9 +5543,9 @@ DiskSliceSize=736000000
 <setupdefault><i>(blank)</i></setupdefault>
 <body>
 <p>Specifies the name(s) of the image file(s) to display on the left side of the <i>Welcome</i> and <i>Setup Completed</i> wizard pages. Wildcards are supported and the files(s) must be located in your installation's <link topic="sourcedirectorynotes">source directory</link> when running the compiler, unless a fully qualified pathname is specified or the pathname is prefixed by "compiler:", in which case it looks for the file in the compiler directory.</p>
-<p>Supports .bmp and .png images, including those with transparency. Use <link topic="setup_wizardimagebackcolor">WizardImageBackColor</link> to customize the background color. Even transparent .bmp files are supported, see <link topic="setup_wizardimagealphaformat">WizardImageAlphaFormat</link> for more information.  Use <link topic="setup_wizardimageopacity">WizardImageOpacity</link> to increase transparency.</p>
+<p>Supports .bmp and .png images, including those with transparency. Use <link topic="setup_wizardimagebackcolor">WizardImageBackColor</link> to customize the background color. Even transparent .bmp files are supported, see <link topic="setup_wizardimagealphaformat">WizardImageAlphaFormat</link> for more information. Use <link topic="setup_wizardimageopacity">WizardImageOpacity</link> to increase transparency.</p>
 <p>The size of the area in which the image is displayed depends on the system's DPI setting and whether the default <link topic="langoptionssection">font</link>, <link topic="setup_wizardsizepercent">WizardSizePercent</link>, and <link topic="setup_wizardkeepaspectratio">WizardKeepAspectRatio</link> settings are being used. In all cases, an aspect ratio of 164:314 is maintained. The specified image should have the same aspect ratio.</p>
-<p>Any size of image may be used; by default, images that are too small or too large to fit in the image area will be stretched or shrunk. Specifying an image larger than 164x314 is recommended to avoid the image looking blurry on higher-DPI systems. The size of the default built-in image is 240x459.</p>
+<p>Any size of image may be used; by default, images that are too small or too large to fit in the image area will be stretched or shrunk. Specifying an image larger than 202x386 is recommended to avoid the image looking blurry on higher-DPI systems. The size of the default built-in image is 240x459.</p>
 <p>If a single larger-sized image does not produce a satisfactory result across different DPI settings, multiple files may be specified, separated by commas. In that case, Setup will automatically select the one that best matches the size of the image area. Assuming the default font, <tt>WizardSizePercent</tt>, and <tt>WizardKeepAspectRatio</tt> settings are being used, the size of the image area at various DPI settings is:</p>
 <table>
 <tr><td>100%</td><td>202x386</td></tr>
@@ -5705,7 +5708,7 @@ Otherwise, it defaults to <tt>#e8f3f9</tt> (light grayish blue).</p>
 <setupdefault><tt>255</tt></setupdefault>
 <body>
 <p>If set to <tt>0</tt>, the wizard images will be fully transparent. If set to <tt>255</tt>, the wizard images will be fully opaque (non-transparent).</p>
-<p>This is useful if you want to use single wizard images for both light and dark appearances. For example, you can set it to <tt>150</tt> to achieve partial transparency.</p>
+<p>This is useful if you want to use identical regular and <tt>DynamicDark</tt> wizard images. For example, you can set it to <tt>150</tt> to achieve partial transparency.</p>
 <example><pre>WizardStyle=modern dynamic
 WizardImageFile=MyImage.png
 WizardImageFileDynamicDark=MyImage.png

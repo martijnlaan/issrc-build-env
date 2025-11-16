@@ -243,7 +243,7 @@ implementation
 
 uses
   ShellAPI, ShlObj, StrUtils, ActiveX, RegStr, Imaging.pngimage, Themes,
-  ChaCha20, ECDSA, ISSigFunc, BidiCtrls,
+  ChaCha20, ECDSA, ISSigFunc, BidiCtrls, RichEditViewer,
   SetupLdrAndSetup.Messages, Shared.SetupMessageIDs, Setup.DownloadFileFunc, Setup.ExtractFileFunc,
   SetupLdrAndSetup.InstFunc, Setup.InstFunc, Setup.RedirFunc, PathFunc,
   Compression.Base, Compression.Zlib, Compression.bzlib, Compression.LZMADecompressor,
@@ -2830,9 +2830,13 @@ var
   procedure ReadWizardImages(const Reader: TCompressedBlockReader; const WizardImages: TWizardImages;
     const WantImages: Boolean);
   begin
-    var N: LongInt;
-    Reader.Read(N, SizeOf(LongInt));
-    for var I := 0 to N-1 do begin
+    var Count: Integer;
+    Reader.Read(Count, SizeOf(Integer));
+    if Count = -1 then { True if DynamicDark images were same as 'regular' images }
+      Exit;
+    if WantImages then
+      WizardImages.Clear; { This is to clear 'regular' images which have been read already }
+    for var I := 0 to Count-1 do begin
       if WantImages then
         WizardImages.Add(ReadWizardImage(Reader))
       else
@@ -3323,7 +3327,7 @@ begin
           it will use the ZIRCON style, see below. This does *not* mean Uninstall will then
           also use ZIRCON. To test Uninstall styling use a real Setup compiled by the
           compiler. }
-        var WantWizardImagesDynamicDark := False;
+  var WantWizardImagesDynamicDark := False;
         IsWinDark := DarkModeActive;
         if not HighContrastActive and not InitNoStyle then begin
           const IsDynamicDark = (SetupHeader.WizardDarkStyle = wdsDynamic) and IsWinDark;
@@ -3355,8 +3359,11 @@ begin
           {$ENDIF}
           then begin
             TStyleManager.SetStyle(Handle);
-            if not IsDarkInstallMode and (shWizardLightButtonsUnstyled in SetupHeader.Options) then
-              TNewButton.DontStyle := True;
+            if not IsDarkInstallMode then begin
+              TRichEditViewer.DontStyleFont := True; { Keep foreground colors }
+              if (shWizardLightButtonsUnstyled in SetupHeader.Options) then
+                TNewButton.DontStyle := True; { Keep native buttons (including command links) }
+            end;
           end;
         end;
 
@@ -3486,8 +3493,8 @@ begin
           Integer(@PSetupRunEntry(nil).MinVersion),
           Integer(@PSetupRunEntry(nil).OnlyBelowVersion));
         { Wizard images }
-        ReadWizardImages(Reader, WizardImages, not WantWizardImagesDynamicDark);
-        ReadWizardImages(Reader, WizardSmallImages, not WantWizardImagesDynamicDark);
+        ReadWizardImages(Reader, WizardImages, True);      { If WantWizardImagesDynamicDark is True, then these might be overwritten below }
+        ReadWizardImages(Reader, WizardSmallImages, True); { Same }
         ReadWizardImages(Reader, WizardImages, WantWizardImagesDynamicDark);
         ReadWizardImages(Reader, WizardSmallImages, WantWizardImagesDynamicDark);
         { Decompressor DLL }
