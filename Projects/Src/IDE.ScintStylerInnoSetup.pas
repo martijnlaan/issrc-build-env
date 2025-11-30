@@ -138,6 +138,7 @@ type
       const NonConstStyle: TInnoSetupStylerStyle; var BraceLevel: Integer);
     procedure SetISPPInstalled(const Value: Boolean);
     function GetScriptWordList(ClassOrRecordMembers: Boolean): AnsiString;
+    function GetSetupSectionDirectiveValueIsMultiValue(SetupSectionDirective: TSetupSectionDirective): Boolean;
     function GetSetupSectionDirectiveValueWordList(SetupSectionDirective: TSetupSectionDirective): AnsiString;
   protected
     procedure CommitStyle(const Style: TInnoSetupStylerStyle);
@@ -169,6 +170,7 @@ type
     property KeywordsWordList[Section: TInnoSetupStylerSection]: AnsiString read GetKeywordsWordList;
     property ScriptWordList[ClassOrRecordMembers: Boolean]: AnsiString read GetScriptWordList;
     property SectionsWordList: AnsiString read FSectionsWordList;
+    property SetupSectionDirectiveValueIsMultiValue[SetupSectionDirective: TSetupSectionDirective]: Boolean read GetSetupSectionDirectiveValueIsMultiValue;
     property SetupSectionDirectiveValueWordList[SetupSectionDirective: TSetupSectionDirective]: AnsiString read GetSetupSectionDirectiveValueWordList;
     property Theme: TTheme read FTheme write FTheme;
   end;
@@ -1049,6 +1051,14 @@ begin
   Result := TInnoSetupStylerLineState(LineState).Section;
 end;
 
+function TInnoSetupStyler.GetSetupSectionDirectiveValueIsMultiValue(
+  SetupSectionDirective: TSetupSectionDirective): Boolean;
+{ "MultiValue" means a directive like WizardStyle which accepts a space separated list of values }
+begin
+  Result := SetupSectionDirective in [ssDisablePrecompiledFileVerifications,
+    ssPrivilegesRequiredOverridesAllowed, ssWizardStyle];
+end;
+
 function TInnoSetupStyler.GetSetupSectionDirectiveValueWordList(
   SetupSectionDirective: TSetupSectionDirective): AnsiString;
 begin
@@ -1863,15 +1873,15 @@ type
   TZipLevel = 1..9;
 
 const
-  LZMALevels: TArray<TScintRawString> = ['none', 'fast', 'normal', 'max', 'ultra', 'ultra64'];
+  LZMALevels: TArray<TScintRawString> = ['fast', 'normal', 'max', 'ultra', 'ultra64'];
 
 function GetCompressionValues: TArray<TScintRawString>;
 
-procedure SetResult(var I: Integer; const S: TScintRawString);
-begin
-  Result[I] := S;
-  Inc(I);
-end;
+  procedure SetResult(var I: Integer; const S: TScintRawString);
+  begin
+    Result[I] := S;
+    Inc(I);
+  end;
 
 const
   ZipAlgos: TArray<TScintRawString> = ['zip', 'bzip'];
@@ -1966,7 +1976,7 @@ initialization
     SSDV(ssCompression, GetCompressionValues),
     SSDV(ssDisablePrecompiledFileVerifications, ['setupe32', 'setupcustomstylee32', 'setupldre32', 'is7zdll', 'isbunzipdll', 'isunzlibdll', 'islzmaexe']),
     SSDV(ssEncryption, ['full', SYes, SNo]),
-    SSDV(ssInternalCompressLevel, LZMALevels),
+    SSDV(ssInternalCompressLevel, ['none'] + LZMALevels), { We don't list 0 }
     SSDV(ssLanguageDetectionMethod, ['uilanguage', 'locale', 'none']),
     SSDV(ssLZMAAlgorithm, ['0', '1']),
     SSDV(ssLZMAMatchFinder, ['BT', 'HC']),
@@ -1974,7 +1984,7 @@ initialization
     SSDV(ssPrivilegesRequired, ['admin', 'lowest']), { We don't list none/poweruser }
     SSDV(ssPrivilegesRequiredOverridesAllowed, ['commandline', 'dialog']),
     SSDV(ssUninstallLogMode, ['append', 'new', 'override']),
-    SSDV(ssUseSetupLdr, [SYes, SNo]), { To be updated in e64 }
+    SSDV(ssUseSetupLdr, ['x86', 'x64', SYes, SNo]),
     SSDV(ssWizardImageAlphaFormat, ['none', 'defined', 'premultiplied']),
     SSDV(ssWizardStyle, ['classic', 'modern', 'light', 'dark', 'dynamic', 'includetitlebar', 'excludelightbuttons', 'polar', 'slate', 'windows11', 'zircon'])];
 
