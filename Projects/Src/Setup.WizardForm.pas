@@ -15,7 +15,7 @@ uses
   Windows, SysUtils, Messages, Classes, Graphics, Controls,
   Forms, Dialogs, StdCtrls, ExtCtrls,
   NewProgressBar, NewCheckListBox, RichEditViewer, NewStaticText,
-  PasswordEdit, FolderTreeView, BitmapImage, NewNotebook, BidiCtrls,
+  PasswordEdit, FolderTreeView, BitmapImage, NewNotebook, NewCtrls,
   Shared.Struct, Shared.SetupMessageIDs,
   Setup.SetupForm, Setup.MainFunc;
 
@@ -103,7 +103,7 @@ type
     FInstallingPage: TNewNotebookPage;
     FInfoAfterPage: TNewNotebookPage;
     FDiskSpaceLabel: TNewStaticText;
-    FDirEdit: TEdit;
+    FDirEdit: TNewEdit;
     FGroupEdit: TNewEdit;
     FNoIconsCheck: TNewCheckBox;
     FPasswordLabel: TNewStaticText;
@@ -266,7 +266,7 @@ type
     property InstallingPage: TNewNotebookPage read FInstallingPage;
     property InfoAfterPage: TNewNotebookPage read FInfoAfterPage;
     property DiskSpaceLabel: TNewStaticText read FDiskSpaceLabel;
-    property DirEdit: TEdit read FDirEdit;
+    property DirEdit: TNewEdit read FDirEdit;
     property GroupEdit: TNewEdit read FGroupEdit;
     property NoIconsCheck: TNewCheckBox read FNoIconsCheck;
     property PasswordLabel: TNewStaticText read FPasswordLabel;
@@ -785,7 +785,7 @@ begin
 
   { Unlike other forms (which use only WizardBackColor and not WizardBackImageFile), we do not check
     for clWindow here. The compiler guarantees that if WizardBackColor (i.e., SetupHeader.BackColor)
-    equals clWindow, a background image is always present. This is because if a image was not set,
+    equals clWindow, a background image is always present. This is because if an image was not set,
     but WizardBackColor was clWindow, the compiler changes it to clNone, as documented.}
   if not CustomWizardBackground then
     MainPanel.ParentBackground := False;
@@ -821,8 +821,10 @@ begin
     custom styles they do. Recreate this 2-pixel space between the buttons when styled. Causes
     additional space on styles like Zircon which are like Windows 11, but that does not seem worth
     adding a new directive.  }
-  if LStyle <> nil then
-    Dec(X, 2);
+  if BackButton.IsCustomStyleActive then
+    Dec(X, 1);
+  if NextButton.IsCustomStyleActive then
+    Dec(X, 1);
   BackButton.Left := X;
 
   { Initialize wizard style - also see TUninstallProgressForm.Initialize and TTaskDialogForm.Create }

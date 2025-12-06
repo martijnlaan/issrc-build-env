@@ -247,7 +247,7 @@ implementation
 
 uses
   ShellAPI, ShlObj, StrUtils, ActiveX, RegStr, Imaging.pngimage, Themes,
-  ChaCha20, ECDSA, ISSigFunc, BidiCtrls, PathFunc, UnsignedFunc, FormBackgroundStyleHook, RichEditViewer,
+  ChaCha20, ECDSA, ISSigFunc, NewCtrls, PathFunc, UnsignedFunc, FormBackgroundStyleHook, RichEditViewer,
   SetupLdrAndSetup.Messages, Shared.SetupMessageIDs, Setup.DownloadFileFunc, Setup.ExtractFileFunc,
   SetupLdrAndSetup.InstFunc, Setup.InstFunc, Setup.RedirFunc,
   Compression.Base, Compression.Zlib, Compression.bzlib, Compression.LZMADecompressor,
@@ -1198,7 +1198,7 @@ begin
   end
   else if Cnst = 'wizardhwnd' then begin
     if Assigned(WizardForm) then
-      Result := IntToStr(WizardForm.Handle)
+      Result := Format('%d', [UInt32(WizardForm.Handle)])
     else
       Result := '0';
   end
@@ -3457,8 +3457,6 @@ begin
           {$ENDIF}
           then begin
             TStyleManager.SetStyle(Handle);
-            if not IsDarkInstallMode and (shWizardLightButtonsUnstyled in SetupHeader.Options) then
-              TNewButton.DontStyle := True; { Keep native buttons (including command links) }
             CustomWizardBackground := SetupHeader.WizardBackColor <> clNone;
             if CustomWizardBackground then begin
               TCustomStyleEngine.RegisterStyleHook(TSetupForm, TFormBackgroundStyleHook);
