@@ -210,7 +210,7 @@ type
     BStopCompile: TMenuItem;
     HISPPDoc: TMenuItem;
     N13: TMenuItem;
-    EGoto: TMenuItem;
+    EGotoLine: TMenuItem;
     RTerminate: TMenuItem;
     BMenu: TMenuItem;
     BLowPriority: TMenuItem;
@@ -370,7 +370,7 @@ type
     procedure RParametersClick(Sender: TObject);
     procedure POutputListCopyClick(Sender: TObject);
     procedure BStopCompileClick(Sender: TObject);
-    procedure EGotoClick(Sender: TObject);
+    procedure EGotoLineClick(Sender: TObject);
     procedure RTerminateClick(Sender: TObject);
     procedure BMenuClick(Sender: TObject);
     procedure BLowPriorityClick(Sender: TObject);
@@ -500,7 +500,6 @@ type
     FFirstTabSelectShortCut, FLastTabSelectShortCut: TShortCut;
     FCompileShortCut2: TShortCut;
     FUpdatePanelMessages: TUpdatePanelMessages;
-    FBuildImageList: TImageList;
     FHighContrastActive: Boolean;
     FDonateImageMenuItem: TMenuItem;
     procedure AppOnActivate(Sender: TObject);
@@ -3541,7 +3540,7 @@ procedure TMainForm.UpdateImages;
 { Should be called at startup and after DPI changes }
 begin
   var WH := MulDiv(16, CurrentPPI, 96);
-  var Images := ImagesModule.LightToolBarImageCollection;
+  var Images := ImagesModule.ToolbarImageCollection[FTheme.Dark];
 
   var Image := Images.GetSourceImage(Images.GetIndexByName('heart-filled'), WH, WH);
   UpdatePanelDonateBitBtn.Graphic := Image;
@@ -5431,16 +5430,9 @@ begin
   SetListBoxWindowTheme(DebugCallStackList);
   SetListBoxWindowTheme(FindResultsList);
 
-  if FTheme.Dark then begin
-    ThemedToolbarVirtualImageList.ImageCollection := ImagesModule.DarkToolBarImageCollection;
-    ThemedMarkersAndACVirtualImageList.ImageCollection := ImagesModule.DarkMarkersAndACImageCollection;
-    FBuildImageList := ImagesModule.DarkBuildImageList;
-  end else begin
-    ThemedToolbarVirtualImageList.ImageCollection := ImagesModule.LightToolBarImageCollection;
-    ThemedMarkersAndACVirtualImageList.ImageCollection := ImagesModule.LightMarkersAndACImageCollection;
-    FBuildImageList := ImagesModule.LightBuildImageList;
-  end;
-
+  ThemedToolbarVirtualImageList.ImageCollection := ImagesModule.ToolBarImageCollection[FTheme.Dark];
+  ThemedMarkersAndACVirtualImageList.ImageCollection := ImagesModule.MarkersAndACImageCollection[FTheme.Dark];
+  
   UpdateThemeData(True);
   UpdateBevel1Visibility;
   UpdateMarginsAndAutoCompleteIcons;
@@ -5880,7 +5872,7 @@ begin
   FBecameIdle := True;
 end;
 
-procedure TMainForm.EGotoClick(Sender: TObject);
+procedure TMainForm.EGotoLineClick(Sender: TObject);
 var
   S: String;
   L: Integer;
@@ -5939,7 +5931,7 @@ begin
       end;
     spCompileIcon:
       if FCompiling then begin
-        var BuildImageList := FBuildImageList;
+        var BuildImageList := ImagesModule.BuildImageList[FTheme.Dark];
         ImageList_Draw(BuildImageList.Handle, FBuildAnimationFrame, Canvas.Handle,
           Rect.Left + ((Rect.Right - Rect.Left) - BuildImageList.Width) div 2,
           Rect.Top + ((Rect.Bottom - Rect.Top) - BuildImageList.Height) div 2, ILD_NORMAL);
