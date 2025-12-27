@@ -493,7 +493,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegOpenKeyExView(RegView, RootKey, PChar(SubKeyName), 0, KEY_QUERY_VALUE, K) = ERROR_SUCCESS then begin
@@ -506,7 +506,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegOpenKeyExView(RegView, RootKey, PChar(SubKeyName), 0, KEY_QUERY_VALUE, K) = ERROR_SUCCESS then begin
@@ -520,7 +520,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKey := Stack.GetString(PStart-2);
       Stack.SetBool(PStart, RegDeleteKeyIncludingSubkeys(RegView, RootKey, PChar(SubKey)) = ERROR_SUCCESS);
     end);
@@ -528,7 +528,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       Stack.SetBool(PStart, RegDeleteKeyIfEmpty(RegView, RootKey, PChar(SubKeyName)) = ERROR_SUCCESS);
     end);
@@ -536,7 +536,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegOpenKeyExView(RegView, RootKey, PChar(SubKeyName), 0, KEY_SET_VALUE, K) = ERROR_SUCCESS then begin
@@ -550,7 +550,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       Stack.SetBool(PStart, GetSubkeyOrValueNames(RegView, RootKey,
         Stack.GetString(PStart-2), Stack, PStart-3, True));
     end);
@@ -558,7 +558,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       Stack.SetBool(PStart, GetSubkeyOrValueNames(RegView, RootKey,
         Stack.GetString(PStart-2), Stack, PStart-3, False));
     end);
@@ -566,7 +566,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegOpenKeyExView(RegView, RootKey, PChar(SubKeyName), 0, KEY_QUERY_VALUE, K) = ERROR_SUCCESS then begin
@@ -582,7 +582,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegOpenKeyExView(RegView, RootKey, PChar(SubKeyName), 0, KEY_QUERY_VALUE, K) = ERROR_SUCCESS then begin
@@ -598,7 +598,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegOpenKeyExView(RegView, RootKey, PChar(SubKeyName), 0, KEY_QUERY_VALUE, K) = ERROR_SUCCESS then begin
@@ -618,7 +618,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegOpenKeyExView(RegView, RootKey, PChar(SubKeyName), 0, KEY_QUERY_VALUE, K) = ERROR_SUCCESS then begin
@@ -642,7 +642,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegCreateKeyExView(RegView, RootKey, PChar(SubKeyName), 0, nil, REG_OPTION_NON_VOLATILE, KEY_QUERY_VALUE or KEY_SET_VALUE, nil, K, nil) = ERROR_SUCCESS then begin
@@ -665,7 +665,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegCreateKeyExView(RegView, RootKey, PChar(SubKeyName), 0, nil, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, nil, K, nil) = ERROR_SUCCESS then begin
@@ -683,7 +683,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegCreateKeyExView(RegView, RootKey, PChar(SubKeyName), 0, nil, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, nil, K, nil) = ERROR_SUCCESS then begin
@@ -707,12 +707,12 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegCreateKeyExView(RegView, RootKey, PChar(SubKeyName), 0, nil, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, nil, K, nil) = ERROR_SUCCESS then begin
         var ValueName := Stack.GetString(PStart-3);
-        var Data := Stack.GetUInt32(PStart-4);
+        var Data := Stack.GetUInt(PStart-4);
         if RegSetValueEx(K, PChar(ValueName), 0, REG_DWORD, @Data, SizeOf(Data)) = ERROR_SUCCESS then
           Stack.SetBool(PStart, True)
         else
@@ -725,7 +725,7 @@ var
     begin
       var RegView: TRegView;
       var RootKey: HKEY;
-      CrackCodeRootKey(Stack.GetUInt32(PStart-1), RegView, RootKey);
+      CrackCodeRootKey(Stack.GetUInt(PStart-1), RegView, RootKey);
       var SubKeyName := Stack.GetString(PStart-2);
       var K: HKEY;
       if RegCreateKeyExView(RegView, RootKey, PChar(SubKeyName), 0, nil, REG_OPTION_NON_VOLATILE, KEY_SET_VALUE, nil, K, nil) = ERROR_SUCCESS then begin
@@ -1572,7 +1572,7 @@ var
   end;
 
   type
-    TDllProc = function(const Param1, Param2: Longint): Longint; stdcall;
+    TDllProc = function(const Param1, Param2: NativeInt): NativeInt; stdcall;
 
   procedure RegisterWindowsScriptFuncs;
   begin
@@ -1582,71 +1582,62 @@ var
     end);
     RegisterScriptFunc('FINDWINDOWBYCLASSNAME', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      {$IFNDEF CPUX86}
-      {$MESSAGE WARN 'Needs updating for non-x86 builds, same for FindWindowByWindowName' }
-      {$ENDIF}
-      Stack.SetInt(PStart, FindWindow(PChar(Stack.GetString(PStart-1)), nil));
+      Stack.SetNativeUInt(PStart, FindWindow(PChar(Stack.GetString(PStart-1)), nil));
     end);
     RegisterScriptFunc('FINDWINDOWBYWINDOWNAME', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      Stack.SetInt(PStart, FindWindow(nil, PChar(Stack.GetString(PStart-1))));
+      Stack.SetNativeUInt(PStart, FindWindow(nil, PChar(Stack.GetString(PStart-1))));
     end);
     RegisterScriptFunc('SENDMESSAGE', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      {$IFNDEF CPUX86}
-      {$MESSAGE WARN 'Needs updating for non-x86 builds, same for PostMessage, SendNotifyMessage and *Broadcast*' }
-      {$ENDIF}
-      Stack.SetInt(PStart, SendMessage(Stack.GetInt(PStart-1), Stack.GetInt(PStart-2), Stack.GetInt(PStart-3), Stack.GetInt(PStart-4)));
+      Stack.SetNativeInt(PStart, SendMessage(Stack.GetNativeUInt(PStart-1), Stack.GetUInt(PStart-2), Stack.GetNativeUInt(PStart-3), Stack.GetNativeInt(PStart-4)));
     end);
     RegisterScriptFunc('POSTMESSAGE', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      Stack.SetBool(PStart, PostMessage(Stack.GetInt(PStart-1), Stack.GetInt(PStart-2), Stack.GetInt(PStart-3), Stack.GetInt(PStart-4)));
+      Stack.SetBool(PStart, PostMessage(Stack.GetNativeUInt(PStart-1), Stack.GetUInt(PStart-2), Stack.GetNativeUInt(PStart-3), Stack.GetNativeInt(PStart-4)));
     end);
     RegisterScriptFunc('SENDNOTIFYMESSAGE', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      Stack.SetBool(PStart, SendNotifyMessage(Stack.GetInt(PStart-1), Stack.GetInt(PStart-2), Stack.GetInt(PStart-3), Stack.GetInt(PStart-4)));
+      Stack.SetBool(PStart, SendNotifyMessage(Stack.GetNativeUInt(PStart-1), Stack.GetUInt(PStart-2), Stack.GetNativeUInt(PStart-3), Stack.GetNativeInt(PStart-4)));
     end);
     RegisterScriptFunc('REGISTERWINDOWMESSAGE', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      Stack.SetInt(PStart, RegisterWindowMessage(PChar(Stack.GetString(PStart-1))));
+      Stack.SetUInt(PStart, RegisterWindowMessage(PChar(Stack.GetString(PStart-1))));
     end);
     RegisterScriptFunc('SENDBROADCASTMESSAGE', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      Stack.SetInt(PStart, SendMessage(HWND_BROADCAST, Stack.GetInt(PStart-1), Stack.GetInt(PStart-2), Stack.GetInt(PStart-3)));
+      Stack.SetNativeInt(PStart, SendMessage(HWND_BROADCAST, Stack.GetUInt(PStart-1), Stack.GetNativeUInt(PStart-2), Stack.GetNativeInt(PStart-3)));
     end);
     RegisterScriptFunc('POSTBROADCASTMESSAGE', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      Stack.SetBool(PStart, PostMessage(HWND_BROADCAST, Stack.GetInt(PStart-1), Stack.GetInt(PStart-2), Stack.GetInt(PStart-3)));
+      Stack.SetBool(PStart, PostMessage(HWND_BROADCAST, Stack.GetUInt(PStart-1), Stack.GetNativeUInt(PStart-2), Stack.GetNativeInt(PStart-3)));
     end);
     RegisterScriptFunc('SENDBROADCASTNOTIFYMESSAGE', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      Stack.SetBool(PStart, SendNotifyMessage(HWND_BROADCAST, Stack.GetInt(PStart-1), Stack.GetInt(PStart-2), Stack.GetInt(PStart-3)));
+      Stack.SetBool(PStart, SendNotifyMessage(HWND_BROADCAST, Stack.GetUInt(PStart-1), Stack.GetNativeUInt(PStart-2), Stack.GetNativeInt(PStart-3)));
     end);
     RegisterScriptFunc('LOADDLL', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      {$IFNDEF CPUX86}
-      {$MESSAGE WARN 'Needs updating for non-x86 builds, same for CallDllProc and FreeDll' }
-      {$ENDIF}
       var DllHandle := SafeLoadLibrary(Stack.GetString(PStart-1), SEM_NOOPENFILEERRORBOX);
       if DllHandle <> 0 then
         Stack.SetInt(PStart-2, 0)
       else
-        Stack.SetInt(PStart-2, GetLastError);
-      Stack.SetInt(PStart, DllHandle);
+        Stack.SetInt(PStart-2, Integer(GetLastError));
+      Stack.SetNativeUInt(PStart, DllHandle);
     end);
     RegisterScriptFunc('CALLDLLPROC', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
       var DllProc: TDllProc;
-      @DllProc := GetProcAddress(Stack.GetInt(PStart-1), PChar(Stack.GetString(PStart-2)));
+      @DllProc := GetProcAddress(Stack.GetNativeUInt(PStart-1), PChar(Stack.GetString(PStart-2)));
       if Assigned(DllProc) then begin
-        Stack.SetInt(PStart-5, DllProc(Stack.GetInt(PStart-3), Stack.GetInt(PStart-4)));
+        Stack.SetNativeInt(PStart-5, DllProc(Stack.GetNativeInt(PStart-3), Stack.GetNativeInt(PStart-4)));
         Stack.SetBool(PStart, True);
       end else
         Stack.SetBool(PStart, False);
     end);
     RegisterScriptFunc('FREEDLL', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      Stack.SetBool(PStart, FreeLibrary(Stack.GetInt(PStart-1)));
+      Stack.SetBool(PStart, FreeLibrary(Stack.GetNativeUInt(PStart-1)));
     end);
     RegisterScriptFunc('CREATEMUTEX', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
@@ -1881,7 +1872,7 @@ var
     end);
     RegisterScriptFunc('ISDOTNETINSTALLED', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin
-      Stack.SetBool(PStart, IsDotNetInstalled(InstallDefaultRegView, TDotNetVersion(Stack.GetInt(PStart-1)), Stack.GetUInt32(PStart-2)));
+      Stack.SetBool(PStart, IsDotNetInstalled(InstallDefaultRegView, TDotNetVersion(Stack.GetInt(PStart-1)), Stack.GetUInt(PStart-2)));
     end);
     RegisterScriptFunc('ISMSIPRODUCTINSTALLED', procedure(const Caller: TPSExec; const OrgName: AnsiString; const Stack: TPSStack; const PStart: Integer)
     begin

@@ -14,7 +14,7 @@ interface
 uses
   Generics.Collections, uPSCompiler, uPSUtils;
 
-procedure ScriptFuncLibraryRegister_C(const ScriptCompiler: TPSPascalCompiler; const ExecIs64Bit: Boolean;
+procedure ScriptFuncLibraryRegister_C(const ScriptCompiler: TPSPascalCompiler;
   const ObsoleteFunctionWarnings: TDictionary<String, String>);
 
 implementation
@@ -29,7 +29,7 @@ uses
 type
   TMsgBoxType = (mbInformation, mbConfirmation, mbError, mbCriticalError);
 
-procedure ScriptFuncLibraryRegister_C(const ScriptCompiler: TPSPascalCompiler; const ExecIs64Bit: Boolean;
+procedure ScriptFuncLibraryRegister_C(const ScriptCompiler: TPSPascalCompiler;
   const ObsoleteFunctionWarnings: TDictionary<String, String>);
 
   procedure RegisterType(const Name, Value: tbtstring);
@@ -83,19 +83,16 @@ begin
   RegisterType('TArrayOfInteger', 'array of Integer');
   RegisterType('TArrayOfGraphic', 'array of TGraphic');
 
-  RegisterType('DWORD', 'LongWord');
-  RegisterType('UINT', 'LongWord');
+  RegisterType('DWORD', 'Cardinal');
+  RegisterType('UINT', 'Cardinal');
   RegisterType('BOOL', 'LongBool');
-  { Note: In a native 64-bit build, these must be expanded to 64 bits }
-  RegisterType('DWORD_PTR', 'LongWord');
-  RegisterType('UINT_PTR', 'LongWord');
-
-  if ExecIs64Bit then
-    RegisterType('NativeInt', 'Int64')
-  else
-    RegisterType('NativeInt', 'Integer');
 
   RegisterType('INT_PTR', 'NativeInt');
+  RegisterType('DWORD_PTR', 'NativeUInt');
+  RegisterType('UINT_PTR', 'NativeUInt');
+
+  RegisterType('LRESULT', 'NativeInt');
+  RegisterType('HMODULE', 'NativeUInt');
 
   RegisterType('TFileTime',
     'record' +

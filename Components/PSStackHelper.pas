@@ -40,9 +40,9 @@ type
     function GetClassArray(const ItemNo: Longint; const FieldNo: Longint = -1): TArrayOfObject;
     function GetIntArray(const ItemNo: Longint; const FieldNo: Longint = -1): TArrayOfInteger;
     function GetNativeInt(const ItemNo: Longint): NativeInt;
+    function GetNativeUInt(const ItemNo: Longint): NativeUInt;
     function GetProc(const ItemNo: Longint; const Exec: TPSExec): TMethod;
     function GetStringArray(const ItemNo: Longint; const FieldNo: Longint = -1): TArrayOfString;
-    function GetUInt32(const ItemNo: Longint): UInt32;
     function InitArrayBuilder(const ItemNo: LongInt; const FieldNo: Longint = -1): TArrayBuilder;
     function InitArrayEnumerator(const ItemNo: LongInt; const FieldNo: Longint = -1): TArrayEnumerator;
     procedure SetArray(const ItemNo: Longint; const Data: TArray<String>; const FieldNo: Longint = -1); overload;
@@ -50,6 +50,9 @@ type
     procedure SetInt(const ItemNo: Longint; const Data: Integer; const FieldNo: Longint = -1);
     procedure SetInt64(const ItemNo: Longint; const Data: Int64; const FieldNo: Longint = -1);
     procedure SetNativeInt(const ItemNo: Longint; const Data: NativeInt; const FieldNo: Longint = -1);
+    procedure SetNativeUInt(const ItemNo: Longint; const Data: NativeUInt; const FieldNo: Longint = -1);
+    procedure SetUInt(const ItemNo: Longint; const Data: Cardinal; const FieldNo: Longint = -1);
+    procedure SetUInt64(const ItemNo: Longint; const Data: UInt64; const FieldNo: Longint = -1);
   end;
 
 implementation
@@ -110,6 +113,15 @@ begin
 {$ENDIF}
 end;
 
+function TPSStackHelper.GetNativeUInt(const ItemNo: Longint): NativeUInt;
+begin
+{$IFNDEF WIN64}
+  Result := GetUInt(ItemNo);
+{$ELSE}
+  Result := GetUInt64(ItemNo);
+{$ENDIF}
+end;
+
 function TPSStackHelper.GetProc(const ItemNo: Longint; const Exec: TPSExec): TMethod;
 begin
   var P := PPSVariantProcPtr(Items[ItemNo]);
@@ -124,11 +136,6 @@ begin
   SetLength(Result, N);
   for var I := 0 to N-1 do
     Result[I] := VNGetString(PSGetArrayField(Arr, I));
-end;
-
-function TPSStackHelper.GetUInt32(const ItemNo: Longint): UInt32;
-begin
-  Result := UInt32(GetInt(ItemNo));
 end;
 
 function TPSStackHelper.InitArrayBuilder(const ItemNo, FieldNo: Longint): TArrayBuilder;
@@ -187,6 +194,16 @@ begin
     inherited SetInt(ItemNo, Data)
 end;
 
+procedure TPSStackHelper.SetUInt(const ItemNo: Longint; const Data: Cardinal;
+  const FieldNo: Longint);
+begin
+  if FieldNo >= 0 then begin
+    var PSVariantIFC := NewTPSVariantRecordIFC(Items[ItemNo], FieldNo);
+    VNSetUInt(PSVariantIFC, Data);
+  end else
+    inherited SetUInt(ItemNo, Data)
+end;
+
 procedure TPSStackHelper.SetInt64(const ItemNo: Longint; const Data: Int64;
   const FieldNo: Longint);
 begin
@@ -197,6 +214,16 @@ begin
     inherited SetInt64(ItemNo, Data)
 end;
 
+procedure TPSStackHelper.SetUInt64(const ItemNo: Longint; const Data: UInt64;
+  const FieldNo: Longint);
+begin
+  if FieldNo >= 0 then begin
+    var PSVariantIFC := NewTPSVariantRecordIFC(Items[ItemNo], FieldNo);
+    VNSetUInt64(PSVariantIFC, Data);
+  end else
+    inherited SetUInt64(ItemNo, Data)
+end;
+
 procedure TPSStackHelper.SetNativeInt(const ItemNo: Longint; const Data: NativeInt;
   const FieldNo: Longint);
 begin
@@ -204,6 +231,16 @@ begin
   SetInt(ItemNo, Data, FieldNo);
 {$ELSE}
   SetInt64(ItemNo, Data, FieldNo);
+{$ENDIF}
+end;
+
+procedure TPSStackHelper.SetNativeUInt(const ItemNo: Longint; const Data: NativeUInt;
+  const FieldNo: Longint);
+begin
+{$IFNDEF WIN64}
+  SetUInt(ItemNo, Data, FieldNo);
+{$ELSE}
+  SetUInt64(ItemNo, Data, FieldNo);
 {$ENDIF}
 end;
 
