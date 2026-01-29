@@ -448,7 +448,7 @@ function PathExpand(const Filename: String; out ExpandedFilename: String): Boole
   - Repeated slashes are collapsed into one, except for a leading '\\'
   - Any number of dots and spaces at the end of the path are removed, and
     a single dot at the end of preceding components may also be removed
-    (see comments in PathHasInvalidChars for details)
+    (see comments in PathHasInvalidCharacters for details)
   - Paths with certain device names as the only component, or in some cases
     as the last component, are changed to '\\.\<device name>', except when the
     path has the '\\?\' prefix.
@@ -456,6 +456,9 @@ function PathExpand(const Filename: String; out ExpandedFilename: String): Boole
     '\\.\NUL'.
   - '\\.' is changed to '\\.\' and '\\?' is changed to '\\?\'
     (but '\\X' is *not* changed to '\\X\')
+
+  Returns True if successful, or False on failure, which is only known to
+  happen when the input or output path exceeds 32K characters.
 
   Super paths are supposed to be in canonical form already, absolute with no
   forward slashes or repeated backslashes. Although they can be passed to
@@ -465,11 +468,24 @@ function PathExpand(const Filename: String; out ExpandedFilename: String): Boole
   paths), but removing them may interfere with opening or deleting such
   files. }
 var
-  Res: Integer;
-  FilePart: PChar;
-  Buf: array[0..4095] of Char;
+  Buf: array[0..$7FFF] of Char;
 begin
-  DWORD(Res) := GetFullPathName(PChar(Filename), SizeOf(Buf) div SizeOf(Buf[0]),
+  { Length limits observed on Windows 11 25H2:
+    - GetFullPathName fails with ERROR_FILENAME_EXCED_RANGE [sic] if lpFileName
+      is more than $7FFE characters long (not counting null terminator).
+    - GetFullPathName fails with ERROR_INVALID_NAME if the resulting path
+      would be more than $7FFE characters long (not counting null terminator),
+      even if the buffer is much larger than that. }
+
+  { Handle an empty Filename specially, since GetFullPathName fails if passed
+    an empty string. We consider '' -> '' a successful expansion. }
+  if Filename = '' then begin
+    ExpandedFilename := '';
+    Exit(True);
+  end;
+
+  var FilePart: PChar;
+  const Res = GetFullPathName(PChar(Filename), SizeOf(Buf) div SizeOf(Buf[0]),
     Buf, FilePart);
   Result := (Res > 0) and (Res < SizeOf(Buf) div SizeOf(Buf[0]));
   if Result then begin
@@ -485,7 +501,8 @@ end;
 function PathExpand(const Filename: String): String;
 begin
   if not PathExpand(Filename, Result) then
-    Result := Filename;
+    raise Exception.CreateFmt('PathExpand: GetFullPathName failed (length: %d)',
+      [Length(Filename)]);
 end;
 
 function PathExtensionPos(const Filename: String): Integer;
