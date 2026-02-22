@@ -458,7 +458,7 @@ const
     'Word', 'SmallInt', 'LongInt', 'LongWord', 'Integer', 'Cardinal', 'Int64', 'UInt64',
     'Single', 'Double', 'Extended', 'Currency', 'PAnsiChar', 'Variant',
     'TVariantArray', 'NativeInt', 'NativeUInt',
-    //undocumented: NativeString, AnyString, AnyMethod, ___Pointer, tbtString, NativeString, !NotificationVariant
+    //undocumented: NativeString, AnyString, AnyMethod, ___Pointer, tbtString, !NotificationVariant
     'TVarType',
     //undocumented: TIFException
     { ScriptFunc's real enums, values done via PascalRealEnumValues instead of PascalEnumValues}
