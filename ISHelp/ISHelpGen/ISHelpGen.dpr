@@ -15,7 +15,7 @@ uses
   PathFunc in '..\..\Components\PathFunc.pas';
 
 const
-  Version = '1.24';
+  Version = '1.25';
 
   XMLFileVersion = '1';
 
@@ -456,9 +456,19 @@ begin
       elTable:
         Result := Result + '<table>' + ParseFormattedText(Node) + '</table>';
       elTD:
-        Result := Result + '<td>' + ParseFormattedText(Node) + '</td>';
+        begin
+          Result := Result + '<td';
+          if Node.HasAttribute('nowrap') then
+            Result := Result + ' class="nowrap"';
+          Result := Result + '>' + ParseFormattedText(Node) + '</td>';
+        end;
       elTH:
-        Result := Result + '<th>' + ParseFormattedText(Node) + '</th>';
+        begin
+          Result := Result + '<th';
+          if Node.HasAttribute('nowrap') then
+            Result := Result + ' class="nowrap"';
+          Result := Result + '>' + ParseFormattedText(Node) + '</th>';
+        end;
       elTR:
         Result := Result + '<tr>' + ParseFormattedText(Node) + '</tr>';
       elTT:

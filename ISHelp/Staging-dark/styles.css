@@ -39,6 +39,9 @@ th, td {
 	padding: 6px 10px;
 	border: 1px solid #403E41;
 }
+th.nowrap, td.nowrap {
+	white-space: nowrap;
+}
 th {
 	background-color: #353135;
 }

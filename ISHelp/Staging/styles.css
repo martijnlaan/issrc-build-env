@@ -53,6 +53,9 @@ th, td {
 	border: 1px solid #e0e0e0; /* for IE */
 	border: 1px solid var(--table-border-color);
 }
+th.nowrap, td.nowrap {
+	white-space: nowrap;
+}
 th {
 	background-color: #f0f0f0; /* for IE */
 	background-color: var(--table-header-bg-color);

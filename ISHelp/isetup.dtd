@@ -94,4 +94,6 @@
 <!ELEMENT table (tr*)>
 <!ELEMENT tr (th|td)*>
 <!ELEMENT th %InlineOrBlock;>
+<!ATTLIST th nowrap CDATA #IMPLIED>
 <!ELEMENT td %InlineOrBlock;>
+<!ATTLIST td nowrap CDATA #IMPLIED>
