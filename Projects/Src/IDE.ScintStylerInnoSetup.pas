@@ -1995,7 +1995,7 @@ initialization
   SetupSectionDirectivesValues := [
     SSDV(ssArchitecturesAllowed, ArchitecturesExpressionValues),
     SSDV(ssArchitecturesInstallIn64BitMode, ArchitecturesExpressionValues),
-    SSDV(ssArchiveExtraction, ['enhanced/nopassword', 'enhanced', 'full', 'basic']),
+    SSDV(ssArchiveExtraction, ['auto', 'basic', 'enhanced/nopassword', 'enhanced', 'full']),
     SSDV(ssCloseApplications, ['force', SYes, SNo]),
     SSDV(ssCompression, GetCompressionValues),
     SSDV(ssDisablePrecompiledFileVerifications, ['setup', 'setupcustomstyle', 'setupldr', 'is7z', 'isbunzip', 'isunzlib', 'islzma']),

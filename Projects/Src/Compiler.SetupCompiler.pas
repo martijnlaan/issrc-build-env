@@ -82,6 +82,8 @@ type
   TSetupArchitecture = (sa32bit, sa64bit);
   TSetupLdrArchitecture = (slaNone, sla32bit, sla64bit);
 
+  TArchiveExtraction = (aeAuto, aeBasic, aeEnhanced, aeEnhancedNoPassword, aeFull); { should be ordered from basic to full }
+
   TSetupCompiler = class
   private
     ScriptFiles: TStringList;
@@ -133,6 +135,7 @@ type
     InternalCompressLevel, CompressLevel: Integer;
     InternalCompressProps, CompressProps: TLZMACompressorProps;
     UseSolidCompression: Boolean;
+    ArchiveExtraction, MinArchiveExtraction: TArchiveExtraction;
     DontMergeDuplicateFiles: Boolean;
     DisablePrecompiledFileVerifications: TPrecompiledFiles;
     Password: String;
@@ -2792,14 +2795,17 @@ begin
       end;
     ssArchiveExtraction: begin
         Value := LowerCase(Trim(Value));
-        { Names completed to is7z.dll etc later }
-        if Value = 'enhanced/nopassword' then
-          SetupHeader.SevenZipLibraryName := '7zxr'
+        if Value = 'auto' then
+          ArchiveExtraction := aeAuto
+        else if Value = 'basic' then
+          ArchiveExtraction := aeBasic
+        else if Value = 'enhanced/nopassword' then
+          ArchiveExtraction := aeEnhancedNoPassword
         else if Value = 'enhanced' then
-          SetupHeader.SevenZipLibraryName := '7zxa'
+          ArchiveExtraction := aeEnhanced
         else if Value = 'full' then
-          SetupHeader.SevenZipLibraryName := '7z'
-        else if Value <> 'basic' then
+          ArchiveExtraction := aeFull
+        else
           Invalid;
       end;
     ssASLRCompatible: begin
@@ -5817,8 +5823,23 @@ begin
             AbortCompileFmt(SCompilerParamFlagMissing, ['external', 'extractarchive']);
           if not(foIgnoreVersion in Options) then
             AbortCompileFmt(SCompilerParamFlagMissing, ['ignoreversion', 'extractarchive']);
-          if SetupHeader.SevenZipLibraryName = '' then
+          if ArchiveExtraction = aeBasic then
             AbortCompileFmt(SCompilerEntryValueUnsupported, ['Setup', 'ArchiveExtraction', 'basic', 'extractarchive']);
+
+          var ArchiveExt: String;
+          if foDownload in Options then
+            ArchiveExt := PathExtractExt(ADestName)
+          else
+            ArchiveExt := PathExtractExt(SourceWildcard);
+          if not PathSame(ArchiveExt, '.7z') then
+            MinArchiveExtraction := aeFull { When MapArchiveExtension is used it might not really need full, but keeping things simple }
+          else if ExtractArchivePassword <> '' then begin
+            if MinArchiveExtraction < aeEnhanced then
+              MinArchiveExtraction := aeEnhanced;
+          end else begin
+            if MinArchiveExtraction < aeEnhancedNoPassword then
+              MinArchiveExtraction := aeEnhancedNoPassword;
+          end;
         end;
 
         if (foIgnoreVersion in Options) and (foReplaceSameVersionIfContentsDiffer in Options) then
@@ -8229,6 +8250,8 @@ begin
     SetupHeader.WizardBackColorDynamicDark := clNone;
     SetupHeader.WizardBackImageOpacity := 255;
     SetupHeader.WizardLightControlStyling := wcsAll;
+    ArchiveExtraction := aeAuto;
+    MinArchiveExtraction := aeBasic;
 
     { Read [Setup] section }
     EnumIniSection(EnumSetupProc, 'Setup', 0, True, True, '', False, False);
@@ -8847,6 +8870,17 @@ begin
     end;
 
     { Read 7-Zip DLL }
+    if ArchiveExtraction = aeAuto then
+      ArchiveExtraction := MinArchiveExtraction;
+    if ArchiveExtraction = aeEnhancedNoPassword then
+      SetupHeader.SevenZipLibraryName := '7zxr'
+    else if ArchiveExtraction = aeEnhanced then
+      SetupHeader.SevenZipLibraryName := '7zxa'
+    else if ArchiveExtraction = aeFull then
+      SetupHeader.SevenZipLibraryName := '7z'
+    else if ArchiveExtraction <> aeBasic then
+      AbortCompileFmt(SCompilerCompressInternalError, ['Unexpected ArchiveExtraction value']);
+
     if SetupHeader.SevenZipLibraryName <> '' then begin
       SetupHeader.SevenZipLibraryName := Format('is%s%s.dll', [SetupHeader.SevenZipLibraryName, DllNameExtension]);
       AddStatus(Format(SCompilerStatusReadingFile, [SetupHeader.SevenZipLibraryName]));

@@ -4986,11 +4986,12 @@ ExtraDiskSpaceRequired=1_048_576</pre></example>
 <setuptopic directive="ArchiveExtraction">
 <keyword value=".7z" />
 <keyword value=".zip" />
-<setupvalid><tt>basic</tt><br/>
+<setupvalid><tt>auto</tt><br/>
+<tt>basic</tt><br/>
 <tt>enhanced/nopassword</tt><br/>
 <tt>enhanced</tt><br/>
 <tt>full</tt></setupvalid>
-<setupdefault><tt>basic</tt></setupdefault>
+<setupdefault><tt>auto</tt></setupdefault>
 <body>
 <p>This specifies the method of archive extraction used by [Files] section flag <link topic="filessection" anchor="extractarchive">extractarchive</link> and support functions <link topic="isxfunc_ExtractArchive">ExtractArchive</link> and <link topic="isxfunc_CreateExtractionPage">CreateExtractionPage</link>.</p>
 <p><tt>basic</tt> uses an embedded version of the "7z ANSI-C Decoder" from the LZMA SDK by Igor Pavlov, as-is, except that Unicode support and error messages were improved and that it outputs memory requirements. It only supports .7z archives that are not password-protected.</p>
@@ -5009,6 +5010,7 @@ ExtraDiskSpaceRequired=1_048_576</pre></example>
 <p>* = When using a <link topic="64bit">32-bit installer</link>.<br/>
 ** = When extracting a file, at least enough memory will always be allocated to hold the <b>entire</b> file, regardless of the block size. For example, extracting a 1 GB file using the <tt>basic</tt> method requires at least 1 GB of RAM. Consider using a different method for .7z archives that contain large files: their memory requirements depend on the dictionary size only.</p>
 </indent>
+<p>When <tt>auto</tt> is specified, the compiler automatically selects the appropriate method based on entries in the [Files] section. If it selects <tt>basic</tt> because no entry uses the <tt>extractarchive</tt> flag, but you still use the aforementioned support functions, you must manually set the correct method.</p>
 <p>All methods overwrite read-only files which already exist in the destination directory without prompting the user.</p>
 <p>All methods restore the following file properties from the archive, if available: creation time, last modified time, attributes.</p>
 <p>When using the <tt>full</tt> method to extract a compressed archive, such as <i>archive.tar.gz</i>, the output will be the archive file itself (e.g., <i>archive.tar</i>) rather than the individual files contained within it.</p>
