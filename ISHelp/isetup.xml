@@ -3696,13 +3696,11 @@ Filename: "{win}\MYPROG.INI"; Section: "InstallSettings"; Key: "InstallPath"; St
 <ul>
 
 <li>
-<p>You can compile scripts from the command line using the console-mode compiler, ISCC.exe. Command line usage is as follows:</p>
+<p>You can compile scripts from the command line using the console-mode compiler, <tt>ISCC.exe</tt>. Command line usage is as follows:</p>
 
+<precode>iscc <i>[options]</i> <i>&lt;script name&gt;</i></precode>
 <indent>
-<p>iscc <i>[options]</i> <i>&lt;script name&gt;</i></p>
-<p>Or to read from standard input:</p>
-<p>iscc <i>[options]</i> -</p>
-<example>iscc "c:\isetup\samples\my script.iss"</example>
+<example><pre>iscc "c:\isetup\samples\my script.iss"</pre></example>
 </indent>
 
 <p>As shown in the example above, filenames that include spaces must be enclosed in quotes.</p>
@@ -3711,14 +3709,15 @@ Filename: "{win}\MYPROG.INI"; Section: "InstallSettings"; Key: "InstallPath"; St
 
 <indent>
 <table>
-<tr><td>/O(+|-)</td><td>Enable or disable output (overrides <tt>Output</tt>)</td></tr>
-<tr><td>/O&lt;path&gt;</td><td>Output files to specified path (overrides <tt>OutputDir</tt>)</td></tr>
-<tr><td>/F&lt;filename&gt;</td><td>Specifies an output filename (overrides <tt>OutputBaseFilename</tt>)</td></tr>
-<tr><td>/S&lt;name&gt;=&lt;command></td><td>Sets a SignTool with the specified name and command (any Sign Tools configured using the Compiler IDE will be specified automatically)</td></tr>
-<tr><td>/Q</td><td>Quiet compile (print error messages only)</td></tr>
-<tr><td>/Qp</td><td>Enable quiet compile while still displaying progress</td></tr>
+<tr><th>Option</th><th>Meaning</th></tr>
+<tr><td nowrap=""><tt>/O+</tt><br/><tt>/O-</tt></td><td>Enable or disable output (overrides <tt>Output</tt>)</td></tr>
+<tr><td nowrap=""><tt>/O<i>&lt;path&gt;</i></tt></td><td>Output files to specified path (overrides <tt>OutputDir</tt>)</td></tr>
+<tr><td nowrap=""><tt>/F<i>&lt;filename&gt;</i></tt></td><td>Specifies an output filename (overrides <tt>OutputBaseFilename</tt>)</td></tr>
+<tr><td nowrap=""><tt>/S<i>&lt;name&gt;</i>=<i>&lt;command&gt;</i></tt></td><td>Sets a <tt>SignTool</tt> with the specified name and command (any Sign Tools configured using the Compiler IDE will be specified automatically)</td></tr>
+<tr><td nowrap=""><tt>/Q</tt></td><td>Quiet compile (print error messages only)</td></tr>
+<tr><td nowrap=""><tt>/Qp</tt></td><td>Enable quiet compile while still displaying progress</td></tr>
 </table>
-<example>iscc /Qp /O"My Output" /F"MyProgram-1.0" /Sbyparam=$p "c:\isetup\samples\my script.iss"</example>
+<example><pre>iscc /Qp /O"My Output" /F"MyProgram-1.0" /Sbyparam=$p "c:\isetup\samples\my script.iss"</pre></example>
 </indent>
 
 <p>Also see <link topic="isppcc">Inno Setup Preprocessor: Command Line Compiler</link> for additional options.</p>
@@ -3729,9 +3728,9 @@ Filename: "{win}\MYPROG.INI"; Section: "InstallSettings"; Key: "InstallPath"; St
 <li>
 <p>Alternatively, scripts can also be compiled by the Compiler IDE from the command line. Command line usage is as follows:</p>
 
+<precode>iside /cc <i>&lt;script name&gt;</i></precode>
 <indent>
-<p>iside /cc <i>&lt;script name&gt;</i></p>
-<example>iside /cc "c:\isetup\samples\my script.iss"</example>
+<example><pre>iside /cc "c:\isetup\samples\my script.iss"</pre></example>
 </indent>
 
 <p>As shown in the example above, filenames that include spaces must be enclosed in quotes.</p>
@@ -3742,9 +3741,9 @@ Filename: "{win}\MYPROG.INI"; Section: "InstallSettings"; Key: "InstallPath"; St
 <li>
 <p>The Setup Script Wizard can be started from the command line. Command line usage is as follows:</p>
 
+<precode>iside /wizard <i>&lt;wizard name&gt; &lt;script name&gt;</i></precode>
 <indent>
-<p>iside /wizard <i>&lt;wizard name&gt; &lt;script name&gt;</i></p>
-<example>iside /wizard "MyProg Script Wizard" "c:\temp.iss"</example>
+<example><pre>iside /wizard "MyProg Script Wizard" "c:\temp.iss"</pre></example>
 </indent>
 
 <p>As shown in the example above, wizard names and filenames that include spaces must be enclosed in quotes.</p>
@@ -3897,28 +3896,29 @@ issigtool verify "MyFile.txt"
 
 <p>Command line usage is as follows:</p>
 
-<indent>
-<p>issigtool <i>[options]</i> <i>&lt;command&gt;</i> <i>&lt;arguments&gt;</i></p>
-</indent>
+<precode>
+issigtool <i>[options]</i> <i>&lt;command&gt;</i> <i>&lt;arguments&gt;</i>
+</precode>
 
 <p>Available commands:</p>
 
 <indent>
 <table>
+<tr><th>Command</th><th>Meaning</th></tr>
 <tr>
-<td>sign <i>&lt;file names&gt;</i></td>
+<td nowrap=""><tt>sign <i>&lt;file names&gt;</i></tt></td>
 <td>Signs each specified file. Requires a private key.</td>
 </tr>
 <tr>
-<td>verify <i>&lt;file names&gt;</i></td>
+<td nowrap=""><tt>verify <i>&lt;file names&gt;</i></tt></td>
 <td>Verifies the signature of each specified file against the key.</td>
 </tr>
 <tr>
-<td>export-public-key <i>&lt;file name&gt;</i></td>
+<td nowrap=""><tt>export-public-key <i>&lt;file name&gt;</i></tt></td>
 <td>Exports the public key used in the signing process to the specified file.</td>
 </tr>
 <tr>
-<td>generate-private-key</td>
+<td nowrap=""><tt>generate-private-key</tt></td>
 <td>Generates a new private key for signing operations.</td>
 </tr>
 </table>
@@ -3928,20 +3928,21 @@ issigtool verify "MyFile.txt"
 
 <indent>
 <table>
+<tr><th>Option</th><th>Meaning</th></tr>
 <tr>
-<td>--key-file=&lt;filename&gt;</td>
+<td nowrap=""><tt>--key-file=<i>&lt;filename&gt;</i></tt></td>
 <td>Specifies the private key filename required for signing. This option overrides the <tt>ISSIGTOOL_KEY_FILE</tt> environment variable which can also be used.</td>
 </tr>
 <tr>
-<td>--allow-overwrite, -o</td>
+<td nowrap=""><tt>--allow-overwrite</tt>, <tt>-o</tt></td>
 <td>Allow to overwrite existing files.</td>
 </tr>
 <tr>
-<td>--quiet, -q</td>
+<td nowrap=""><tt>--quiet</tt>, <tt>-q</tt></td>
 <td>Suppresses status messages that are normally printed to standard output.</td>
 </tr>
 <tr>
-<td>--help, -?</td>
+<td nowrap=""><tt>--help</tt>, <tt>-?</tt></td>
 <td>Prints usage information.</td>
 </tr>
 </table>
@@ -3949,19 +3950,18 @@ issigtool verify "MyFile.txt"
 
 <p>Examples:</p>
 
-<indent>
-<examples noheader="1">
-issigtool --key-file="MyKey.isprivatekey" generate-private-key<br/>
-issigtool --key-file="MyKey.isprivatekey" sign "MyProg.dll"<br/>
-issigtool --key-file="MyKey.isprivatekey" export-public-key "MyKey.ispublickey"<br/>
+<precode>
+issigtool --key-file="MyKey.isprivatekey" generate-private-key
+issigtool --key-file="MyKey.isprivatekey" sign "MyProg.dll"
+issigtool --key-file="MyKey.isprivatekey" export-public-key "MyKey.ispublickey"
 issigtool --key-file="MyKey.ispublickey" verify "MyProg.dll"
-</examples>
-</indent>
+</precode>
 
 <p>Exit codes:</p>
 
 <indent>
 <table>
+<tr><th>Code</th><th>Meaning</th></tr>
 <tr>
 <td>0</td>
 <td>Success</td>
