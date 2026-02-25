@@ -82,7 +82,7 @@ type
   TSetupArchitecture = (sa32bit, sa64bit);
   TSetupLdrArchitecture = (slaNone, sla32bit, sla64bit);
 
-  TArchiveExtraction = (aeAuto, aeBasic, aeEnhanced, aeEnhancedNoPassword, aeFull); { should be ordered from basic to full }
+  TArchiveExtraction = (aeAuto, aeBasic, aeEnhancedNoPassword, aeEnhanced, aeFull); { should be ordered from basic to full }
 
   TSetupCompiler = class
   private
