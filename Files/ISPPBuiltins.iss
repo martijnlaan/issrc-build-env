@@ -147,12 +147,32 @@
 
 // GetStringFileInfo helpers
 
-#define GetFileCompany(str FileName) GetStringFileInfo(FileName, COMPANY_NAME)
-#define GetFileDescription(str FileName) GetStringFileInfo(FileName, FILE_DESCRIPTION)
+#define GetFileCompanyString(str FileName) GetStringFileInfo(FileName, COMPANY_NAME)
+#define GetFileDescriptionString(str FileName) GetStringFileInfo(FileName, FILE_DESCRIPTION)
 #define GetFileVersionString(str FileName) GetStringFileInfo(FileName, FILE_VERSION)
-#define GetFileCopyright(str FileName) GetStringFileInfo(FileName, LEGAL_COPYRIGHT)
-#define GetFileOriginalFilename(str FileName) GetStringFileInfo(FileName, ORIGINAL_FILENAME)
-#define GetFileProductVersion(str FileName) GetStringFileInfo(FileName, PRODUCT_VERSION)
+#define GetFileCopyrightString(str FileName) GetStringFileInfo(FileName, LEGAL_COPYRIGHT)
+#define GetFileOriginalFilenameString(str FileName) GetStringFileInfo(FileName, ORIGINAL_FILENAME)
+#define GetFileProductVersionString(str FileName) GetStringFileInfo(FileName, PRODUCT_VERSION)
+
+#define GetFileCompany(str S) \
+  WarnRenamedVersion("GetFileCompany", "GetFileCompanyString"), \
+  GetFileCompanyString(S)
+
+#define GetFileDescription(str S) \
+  WarnRenamedVersion("GetFileDescription", "GetFileDescriptionString"), \
+  GetFileDescriptionString(S)
+
+#define GetFileCopyright(str S) \
+  WarnRenamedVersion("GetFileCopyright", "GetFileCopyrightString"), \
+  GetFileCopyrightString(S)
+
+#define GetFileOriginalFilename(str S) \
+  WarnRenamedVersion("GetFileOriginalFilename", "GetFileOriginalFilenameString"), \
+  GetFileOriginalFilenameString(S)
+
+#define GetFileProductVersion(str S) \
+  WarnRenamedVersion("GetFileProductVersion", "GetFileProductVersionString"), \
+  GetFileProductVersionString(S)
 
 #define DeleteToFirstPeriod(str *S) \
   Local[1] = Copy(S, 1, (Local[0] = Pos(".", S)) - 1), \
