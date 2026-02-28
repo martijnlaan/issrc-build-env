@@ -154,25 +154,25 @@
 #define GetFileOriginalFilenameString(str FileName) GetStringFileInfo(FileName, ORIGINAL_FILENAME)
 #define GetFileProductVersionString(str FileName) GetStringFileInfo(FileName, PRODUCT_VERSION)
 
-#define GetFileCompany(str S) \
+#define GetFileCompany(str FileName) \
   WarnRenamedVersion("GetFileCompany", "GetFileCompanyString"), \
-  GetFileCompanyString(S)
+  GetFileCompanyString(FileName)
 
-#define GetFileDescription(str S) \
+#define GetFileDescription(str FileName) \
   WarnRenamedVersion("GetFileDescription", "GetFileDescriptionString"), \
-  GetFileDescriptionString(S)
+  GetFileDescriptionString(FileName)
 
-#define GetFileCopyright(str S) \
+#define GetFileCopyright(str FileName) \
   WarnRenamedVersion("GetFileCopyright", "GetFileCopyrightString"), \
-  GetFileCopyrightString(S)
+  GetFileCopyrightString(FileName)
 
-#define GetFileOriginalFilename(str S) \
+#define GetFileOriginalFilename(str FileName) \
   WarnRenamedVersion("GetFileOriginalFilename", "GetFileOriginalFilenameString"), \
-  GetFileOriginalFilenameString(S)
+  GetFileOriginalFilenameString(FileName)
 
-#define GetFileProductVersion(str S) \
+#define GetFileProductVersion(str FileName) \
   WarnRenamedVersion("GetFileProductVersion", "GetFileProductVersionString"), \
-  GetFileProductVersionString(S)
+  GetFileProductVersionString(FileName)
 
 #define DeleteToFirstPeriod(str *S) \
   Local[1] = Copy(S, 1, (Local[0] = Pos(".", S)) - 1), \
