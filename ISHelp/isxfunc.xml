@@ -2397,6 +2397,7 @@ end;</pre>
         <name>GetVersionNumbersString</name>
         <prototype>function GetVersionNumbersString(const Filename: String; var Version: String): Boolean;</prototype>
         <description><p>Gets the version of the specified file as a string (in "0.0.0.0" format). Returns True if successful, False otherwise.</p></description>
+        <remarks><p>Uses the binary file version from the fixed block of the specified file's version information resource, and not the textual file version from the language specific block.</p></remarks>
       </function>
       <function>
         <name>GetPackedVersion</name>

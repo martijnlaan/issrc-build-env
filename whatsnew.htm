@@ -155,6 +155,12 @@ For conditions of distribution and use, see <a href="files/is/license.txt">LICEN
     <li>Fixed a runtime type mismatch when assigning between open and dynamic arrays.</li>
   </ul>
   </li>
+  <li>ISPP:
+  <ul>
+    <li>Renamed (previously undocumented) support functions <tt>GetFileCompany</tt>, <tt>GetFileDescription</tt>, <tt>GetFileCopyright</tt>, <tt>GetFileOriginalFilename</tt>, and <tt>GetFileProductVersion</tt> to <tt>GetFileCompanyString</tt>, <tt>GetFileDescriptionString</tt>, <tt>GetFileCopyrightString</tt>, <tt>GetFileOriginalFilenameString</tt>, and <tt>GetFileProductVersionString</tt> respectively, making them consistent with the existing (also previously undocumented) <tt>GetFileVersionString</tt>. The old names still work.</li>
+    <li>Documented the difference between <tt>GetFileVersionString</tt> and <tt>GetVersionNumbersString</tt>.</li>
+  </ul>
+  </li>
   <li>The Inno Setup source code now contains SPDX SBOM metadata.</li>
   <li>Updated the 7-Zip and LZMA SDK source code used by Inno Setup to the latest versions.</li>
   <li>Other minor improvements.</li>
