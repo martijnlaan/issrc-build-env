@@ -123,7 +123,9 @@
 
 <li>Support for every Windows release since 2009, including: Windows 11, Windows 10, Windows 11 on Arm, Windows 10 on Arm, Windows Server 2019, Windows Server 2016, Windows 8.1, Windows 8, Windows Server 2012, Windows 7, and Windows Server 2008 R2. (No service packs are required.)</li>
 
-<li>Extensive support for installation of <link topic="32vs64bitinstalls">64-bit</link> applications on the 64-bit editions of Windows. The x64 and Arm64 architectures are both supported.</li>
+<li>Extensive support for installation of <link topic="32vs64bitinstalls">64-bit applications</link> on the 64-bit editions of Windows. The x64 and Arm64 architectures are both supported.</li>
+
+<li>Support for Windows Server Core using <link topic="64bit">64-bit installers</link>.</li>
 
 <li>Extensive support for both administrative and <link topic="admininstallmode">non administrative installations</link> installations.</li>
 
@@ -2742,7 +2744,7 @@ Filename: "{app}\MyProg.exe"; Description: "Launch application"; Flags: postinst
 </param>
 
 <param name="OnLog">
-<p>The name of a <tt>[Code]</tt> procedure to be called for each line of the program's output. Must be combined with the <tt>logoutput</tt> flag. See <link topic="scriptonlog">Pascal Scripting: OnLog Parameters</link> for more information.</p>
+<p>Valid only in a <tt>[Run]</tt> section. The name of a <tt>[Code]</tt> procedure to be called for each line of the program's output. Must be combined with the <tt>logoutput</tt> flag. See <link topic="scriptonlog">Pascal Scripting: OnLog Parameters</link> for more information.</p>
 <example>
 <pre>OnLog: MyOnLog</pre>
 </example>
