@@ -5767,10 +5767,10 @@ begin
         if foRegisterTypeLib in Options then begin
           { Only checks basic versions of ArchitecturesInstallIn64BitMode, so does not catch
             all cases of a mismatch. Setup will then throw an internal error instead. }
-          if (SetupArchitecture = sa32bit) and
+          if (SetupArchitecture = sa32bit) and not(fo32Bit in Options) and
              ((fo64Bit in Options) or (SetupHeader.ArchitecturesInstallIn64BitMode = 'x64compatible')) then
             AbortCompileFmt(SCompilerRegTypeLibArchitectureMismatch, [32, 64])
-          else if (SetupArchitecture = sa64bit) and
+          else if (SetupArchitecture = sa64bit) and not(fo64Bit in Options) and
                   ((fo32Bit in Options) or (SetupHeader.ArchitecturesInstallIn64BitMode = '')) then
             AbortCompileFmt(SCompilerRegTypeLibArchitectureMismatch, [64, 32])
         end;
@@ -6109,14 +6109,14 @@ begin
       { RunOnceId }
       if Values[paRunOnceId].Data <> '' then begin
         if Ext = 0 then
-          AbortCompile(SCompilerRunCantUseRunOnceId);
+          AbortCompileFmt(SCompilerRunCantUseParameter, [ParamRunRunOnceId]);
       end else if Ext = 1 then
         MissingRunOnceIds := True;
       RunOnceId := Values[paRunOnceId].Data;
 
       { Description }
       if (Ext = 1) and (Values[paDescription].Data <> '') then
-        AbortCompile(SCompilerUninstallRunCantUseDescription);
+        AbortCompileFmt(SCompilerUninstallRunCantUseParameter, [ParamRunDescription]);
       Description := Values[paDescription].Data;
 
       { StatusMsg }
@@ -6129,6 +6129,8 @@ begin
       Verb := Values[paVerb].Data;
 
       { OnLog }
+      if (Ext = 1) and (Values[paOnLog].Data <> '') then
+        AbortCompileFmt(SCompilerUninstallRunCantUseParameter, [ParamRunOnLog]);
       OnLog := Values[paOnLog].Data;
 
       { Common parameters }

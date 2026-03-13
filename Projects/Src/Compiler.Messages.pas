@@ -136,7 +136,7 @@ const
   SCompilerArchitectureIdentifierInvalid = 'Architecture identifier "%s" is invalid';
   SCompilerArchitectureIdentifierDeprecatedWarning = 'Architecture identifier "%s" is deprecated. ' +
     'Substituting "%s", but note that "%s" is preferred in most cases. See the "Architecture Identifiers" topic in help file for more information.';
-  SCompilerRegTypeLibArchitectureMismatch = '%d-bit Setup cannot register %d-bit type libraries.';
+  SCompilerRegTypeLibArchitectureMismatch = '%d-bit Setup cannot register type libraries in the %d-bit registry view. If you intend for the type library to be registered in the %0:d-bit registry view, add the "%0:dbit" flag';
 
   { Signing }
   SCompilerSignatureNeeded = 'Signed uninstaller mode is enabled. Using ' +
@@ -333,13 +333,13 @@ const
     'results would be disastrous. (You probably mean to delete a value instead.)';
 
   { [Run] }
-  SCompilerRunCantUseRunOnceId = 'Parameter "RunOnceId" can only be used in ' +
+  SCompilerRunCantUseParameter = 'Parameter "%s" can only be used in ' +
     'an [UninstallRun] section';
   SCompilerRunFlagObsolete = 'Flag "%s" is obsolete. Use "%s" instead.';
   SCompilerRunMultipleWaitFlags = 'Parameter "Flags" cannot include multiple "wait" flags';
 
   { [UninstallRun] }
-  SCompilerUninstallRunCantUseDescription = 'Parameter "Description" can only be used in ' +
+  SCompilerUninstallRunCantUseParameter = 'Parameter "%s" can only be used in ' +
     'a [Run] section';
 
 implementation
