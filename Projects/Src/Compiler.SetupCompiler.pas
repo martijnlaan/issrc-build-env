@@ -5883,7 +5883,7 @@ begin
         if Sign in [fsYes, fsOnce] then begin
           if Verification.Typ = fvHash then
             AbortCompileFmt(SCompilerFilesParamFlagConflict,
-              [ParamCommonFlags, 'Hash', SignFlags[Sign]]);
+              ['Hash', SignFlags[Sign]]);
           if Verification.Typ = fvISSig then
             AbortCompileFmt(SCompilerParamErrorBadCombo2,
               [ParamCommonFlags, SignFlags[Sign], 'issigverify']);
@@ -7850,6 +7850,7 @@ var
           needs to be signed, but first make sure it isn't somehow corrupted. }
         if (SignedFileSize = UnsignedFileSize) and
            UCompareMem(UnsignedFile.Memory, SignedFile.Memory, UnsignedFileSize) then begin
+          SignedFile.Free;
           Result := False;
           Exit;
         end;
