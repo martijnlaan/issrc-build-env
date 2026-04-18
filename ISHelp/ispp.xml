@@ -951,7 +951,7 @@ The first group of options (<tt>option</tt>) controls the general options, while
 			<topic id="Copy">
 				<title>Copy</title>
 				<section title="Prototype">
-					<pre><line><b>str</b> Copy(<b>str</b> S, <b>int</b> StartIndex, <b>int</b>? Count)</line></pre>
+					<pre><line><b>str</b> Copy(<b>str</b> S, <b>int</b> Index, <b>int</b>? Count)</line></pre>
 				</section>
 				<description>
 					<p>Extracts a substring from a string (first parameter). The 1-based index of the character from which the substring should start is specified by the second parameter. The third parameter specifies the number of characters to take, if it is omitted, all characters up to the end of the string are copied to the result.</p>
@@ -1486,7 +1486,7 @@ The first group of options (<tt>option</tt>) controls the general options, while
 			<topic id="IsWin64">
 				<title>IsWin64</title>
 				<section title="Prototype">
-					<pre><line><b>int</b> IsWin64()</line></pre>
+					<pre><line><b>int</b> IsWin64</line></pre>
 				</section>
 				<description>
 					<p>Returns non-zero if the system is running a 64-bit version of Windows that provides the API support Inno Setup requires to perform 64-bit installation tasks, or zero otherwise.</p>
@@ -1758,7 +1758,7 @@ The first group of options (<tt>option</tt>) controls the general options, while
 				<title>FindCode</title>
 				<section title="Prototype">
 					<pre>
-						<line><b>int</b> FindCode()</line>
+						<line><b>int</b> FindCode</line>
 					</pre>
 				</section>
 				<description>
